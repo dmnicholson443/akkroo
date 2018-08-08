@@ -11,23 +11,32 @@ Vagrant.configure("2") do |config|
 # recommended for production, obviously :-)
     config.ssh.forward_agent = true
 
-
+# The variable N is the number of vagrant virtual machines you require
     N = 3
+# This section will configure each N virtual machine:
     (1..N).each do |machine_id|
         config.vm.define "machine#{machine_id}" do |machine|
+          # Set hostname for N virtual machine.
             machine.vm.hostname = "machine#{machine_id}"
+            # Set IP address for each N machine (172.16.100).(100+N)
             machine.vm.network "private_network", ip: "172.16.100.#{100+machine_id}"
-#           machine.vm.synced_folder "www#{machine_id}", "/srv/www", create: true
-
+# This section will configure each N virtual machine for virtualbox
             machine.vm.provider :virtualbox do |virtualbox|
+              # Set VM name for virtualbox GUI and internal identification
                 virtualbox.name = "srv#{machine_id} - 172.16.100.#{100+machine_id} - centos7"
+              # Restrict VM memory to 512MB, can be increased for better performance
                 virtualbox.customize ["modifyvm", :id, "--memory", 512]
             end
-
+# For each N virtual machine, run this section of Ansible parameters
             if machine_id == N
                 machine.vm.provision :ansible do |ansible|
+                  # Manually override Ansible default on host (usually /etc/ansible/hosts)
+                  # This value is relative to 'vagrant init' declaration and from
+                  # where vagrantfile is located and 'vagrant up' is run.
                     ansible.inventory_path = "ansible/hosts"
+                    # Ensures all VM's run the playbook
                     ansible.limit = "all"
+                    # Playbook all VM's will run.
                     ansible.playbook = "ansible/provision.yml"
                 end
             end
