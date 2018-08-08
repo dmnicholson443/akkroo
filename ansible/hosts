@@ -1,0 +1,6 @@
+[webservers]
+machine1.dmninternal.com
+machine2.dmninternal.com
+
+[loadbalancers]
+machine3.dmninternal.com
