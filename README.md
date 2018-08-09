@@ -16,6 +16,7 @@ versions used to build this project, but other versions may also work although
 it should be noted other versions have not been tested in this project.
 
 Vagrant -
+VirtualBox
 Ansible -
 NGINX -
 Linux - 

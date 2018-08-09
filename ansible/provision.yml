@@ -1,0 +1,69 @@
+---
+- hosts: all
+  tasks:
+    - name: Install EPEL Prerequisite
+      yum: name=epel-release state=present
+      become: yes
+    - name: Install NGINX on all machines
+      yum: name=nginx state=installed update_cache=true
+      notify:
+          - start the NGINX daemon
+      become: yes
+  handlers:
+      - name: start the NGINX daemon
+        service: name=nginx enabled=yes state=started
+        become: yes
+
+- name: Configure NGINX for machine1!
+  hosts: machine1.dmninternal.com
+  tasks:
+    - name: copy config files to nginx
+      copy:
+        src: nginx/web01.html
+        dest: /usr/share/nginx/html/web01.html
+      become: yes
+    - name: restart services
+      service:
+        name: nginx
+        state: restarted
+      become: yes
+    - name: Remove index.html
+      command: rm /usr/share/nginx/html/index.html
+      become: yes
+    - name: Rename webn.html to index.html
+      command: mv /usr/share/nginx/html/web01.html /usr/share/nginx/html/index.html
+      become: yes
+
+- name: Configure NGINX for machine2!
+  hosts: machine2.dmninternal.com
+  tasks:
+    - name: copy config files to nginx
+      copy:
+        src: nginx/web02.html
+        dest: /usr/share/nginx/html/web02.html
+      become: yes
+    - name: restart services
+      service:
+        name: nginx
+        state: restarted
+      become: yes
+    - name: Remove index.html
+      command: rm /usr/share/nginx/html/index.html
+      become: yes
+    - name: Rename webn.html to index.html
+      command: mv /usr/share/nginx/html/web02.html /usr/share/nginx/html/index.html
+      become: yes
+
+- name: Configure the load balancer on Machine3
+  hosts: machine3.dmninternal.com
+  tasks:
+    - name: copy config files to nginx for load balancing
+      copy:
+        src: nginx/default.conf
+        dest: /etc/nginx/conf.d/default.conf
+      become: yes
+    - name: restart services
+      service:
+        name: nginx
+        state: restarted
+      become: yes
