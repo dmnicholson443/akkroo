@@ -1,0 +1,26 @@
+As part of this task, evidence has been requested to demonstrate load balancing.
+
+The NGINX default.conf file is configured to redirect requests for the following
+URL on port 8008 (www.dmninternal.com:8008) be serviced by the load
+balancing configuration file located in /etc/nginx/conf.d/default.conf.  The
+file, default.conf, has an upstream load balancing group, named dmn, to forward
+requests to the two vagrant web servers 172.16.100.101 and 172.16.100.102 on
+port 80.  The configuration is a simple round robin load balancing method,
+which is suitable for our purposes.
+
+To demonstrate that load balancing is working correctly, I did the following:
+
+- running the command as root (vi /etc/nginx/nginx.conf) and appended the
+variable, $upstream_addr, in the http { log_format} directive section.  This
+section dictates what information is captured and written to:
+/var/log/nginx/access.log.
+
+By ensuring the hosts file is correct and up to date (see file conf-etc-hosts.sh)
+which should be run to ensure the local hosts file has the correct entries), I
+used Google Chrome to access the URL http://www.dmninternal.com:8008, and
+hitting REFRESH a number of times, I observed that traffic was alternating
+between the two web servers.
+
+Restarting NGINX, and running the command as root (tail /var/log/nginx/access.log 20)
+I can see the upstream addresses in the logging, thereby confirming load balancing
+is taking place.  Please see screen shot for this evidence.
