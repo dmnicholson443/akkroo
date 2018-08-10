@@ -18,19 +18,19 @@ it should be noted other versions have not been tested in this project.
 Other providers can be used, and these can be defined in the created vagrantfile,
 in the machine.vm.provider section.
 
-Vagrant - 2.1.2
-VirtualBox - 5.2.16
-Ansible - 2.6.2
-NGINX - 1.12.2
-Linux - CentOS Linux release 7.5.1804 (Core)
+- Vagrant - 2.1.2
+- VirtualBox - 5.2.16
+- Ansible - 2.6.2
+- NGINX - 1.12.2
+- Linux - CentOS Linux release 7.5.1804 (Core)
 
 ## ENVIRONMENT
 
 This project will create three vagrant virtual machines.  The environment is:
 
-machine1    172.16.100.101/24   web server
-machine2    172.16.100.102/24   web server
-machine3    172.16.100.103/24   load balancer
+- machine1    172.16.100.101/24   web server
+- machine2    172.16.100.102/24   web server
+- machine3    172.16.100.103/24   load balancer
 
 ## INSTALLATION
 
